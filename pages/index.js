@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { NavBar } from "./components";
+import { NavBar } from "../components";
 
 export default () => (
   <div>
