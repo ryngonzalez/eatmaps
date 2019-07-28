@@ -1,0 +1,12 @@
+{
+  "name": "eatmaps",
+  "version": 2,
+  "alias": "eatmaps.io",
+  "scope": "makeshiftlabs",
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@now/next"
+    }
+  ]
+}
