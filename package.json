@@ -3,6 +3,7 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
+    "format": "prettier --write \"{components,pages}/**/*.js\"",
     "start": "next start"
   },
   "dependencies": {
@@ -13,5 +14,8 @@
     "styled-components": "4.3.2"
   },
   "keywords": [],
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "prettier": "^1.18.2"
+  }
 }
