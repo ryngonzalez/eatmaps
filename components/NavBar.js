@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 const NavBarContainer = styled.div`
   background: white;
@@ -8,12 +8,12 @@ const NavBarContainer = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-`;
+`
 
 const NavBar = ({}) => (
   <NavBarContainer>
     <h1>Eatmaps</h1>
   </NavBarContainer>
-);
+)
 
-export default NavBar;
+export default NavBar
