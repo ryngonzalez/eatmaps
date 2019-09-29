@@ -20,19 +20,41 @@ if (!firebase.apps.length) {
 }
 const db = firebase.firestore()
 
-db.collection('guides')
-  .get()
-  .then(querySnapshot => {
-    querySnapshot.forEach(doc => {
-      console.log(`${doc.id} => ${JSON.stringify(doc.data())}`)
-    })
-  })
-
-export default () => (
+const Index = props => (
   <div>
     <NavBar />
     <Link href="/about">
       <a>Hello</a>
     </Link>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <ul>
+      {props.guides.map(guide => (
+        <li>
+          <a href={`/guides/${guide.id}`}>{guide.title}</a>
+        </li>
+      ))}
+    </ul>
   </div>
 )
+
+Index.getInitialProps = async function() {
+  const querySnapshot = await db.collection('guides').get()
+  const guides = []
+  querySnapshot.forEach(guide => {
+    guides.push({
+      id: guide.id,
+      ...guide.data(),
+    })
+  })
+
+  return {
+    guides,
+  }
+}
+
+export default Index
