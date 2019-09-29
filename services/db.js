@@ -5,14 +5,15 @@ import * as firebase from 'firebase/app'
 import 'firebase/firestore'
 
 const firebaseConfig = {
+  projectId: 'eatmaps-24146',
   apiKey: process.env.firebaseApiKey,
   authDomain: process.env.firebaseAuthDomain,
   databaseURL: process.env.firebaseDatabaseURL,
-  projectId: 'eatmaps-24146',
   storageBucket: process.env.firebaseStorageBucket,
   messagingSenderId: process.env.firebaseMessagingSenderId,
   appId: process.env.firebaseAppId,
 }
+
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig)
 }
