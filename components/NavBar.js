@@ -1,19 +1,30 @@
 import styled from 'styled-components'
+import Box from './Box'
+import Text from './Text'
+import SearchField from './SearchField'
 
-const NavBarContainer = styled.div`
-  background: white;
-  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.2);
-  padding: 8px;
-  width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-`
+export const NAV_BAR_HEIGHT = 48
 
 const NavBar = ({}) => (
-  <NavBarContainer>
-    <h1>Eatmaps</h1>
-  </NavBarContainer>
+  <Box
+    bg="NavBarBackground"
+    color="TextPrimary"
+    p={2}
+    boxShadow="medium"
+    position="fixed"
+    top="0"
+    left="0"
+    width="100%"
+    height={NAV_BAR_HEIGHT}
+    display="flex"
+    alignItems="center"
+    justifyContent="space-between"
+  >
+    <Text fontSize={4} letterSpacing={-1} as="h1">
+      Eatmaps
+    </Text>
+    <SearchField />
+  </Box>
 )
 
 export default NavBar

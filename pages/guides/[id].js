@@ -1,10 +1,15 @@
 import { useRouter } from 'next/router'
 import db from '../../services/db.js'
+import { PageContainer } from '../../components'
 
 export default function Guide(props) {
   const router = useRouter()
 
-  return <h1>{props.guide.title}</h1>
+  return (
+    <PageContainer>
+      <h1>{props.guide.title}</h1>
+    </PageContainer>
+  )
 }
 
 Guide.getInitialProps = async function(context) {
