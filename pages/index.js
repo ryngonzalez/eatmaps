@@ -1,19 +1,9 @@
 import Link from 'next/link'
-import { NavBar } from '../components'
+import { PageContainer } from '../components'
 import db from '../services/db.js'
 
 const Index = props => (
-  <div>
-    <NavBar />
-    <Link href="/about">
-      <a>Hello</a>
-    </Link>
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
+  <PageContainer>
     <ul>
       {props.guides.map(guide => (
         <li>
@@ -23,7 +13,7 @@ const Index = props => (
         </li>
       ))}
     </ul>
-  </div>
+  </PageContainer>
 )
 
 Index.getInitialProps = async function() {
