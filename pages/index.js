@@ -6,7 +6,7 @@ const Index = props => (
   <PageContainer>
     <ul>
       {props.guides.map(guide => (
-        <li>
+        <li key={guide.id}>
           <Link href="/guides/[id]" as={`/guides/${guide.id}`}>
             {guide.title}
           </Link>

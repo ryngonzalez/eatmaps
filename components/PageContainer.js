@@ -4,9 +4,9 @@ import Box from './Box'
 import Footer from './Footer'
 
 const PageContainer = ({ children }) => (
-  <Box bg="PageBackground" pt={NAV_BAR_HEIGHT}>
+  <Box bg="PageBackground">
     <NavBar />
-    <Box minHeight={`calc(100vh - ${NAV_BAR_HEIGHT}px)`}>{children}</Box>
+    <Box minHeight="100vh">{children}</Box>
     <Footer />
   </Box>
 )
