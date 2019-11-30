@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import Box from './Box'
 import Text from './Text'
 import SearchField from './SearchField'
+import Link from './Link'
 
 const NavBarContainer = styled.div`
   background: white;
@@ -27,10 +28,21 @@ const NavBar = ({}) => (
     justifyContent="space-between"
     position="sticky"
   >
-    <Text fontSize={4} letterSpacing={-1} as="h1">
-      Eatmaps
-    </Text>
-    <SearchField />
+    <Link href="/">
+      <Text fontFamily="termina" fontSize={4} letterSpacing={-1} as="h1">
+        Eatmaps
+      </Text>
+    </Link>
+    <Box display="flex" alignItems="center">
+      <SearchField />
+      <Box
+        borderRadius="100%"
+        height="36px"
+        width="36px"
+        backgroundColor="FieldBackground"
+        ml="3"
+      ></Box>
+    </Box>
   </Box>
 )
 

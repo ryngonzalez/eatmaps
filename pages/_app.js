@@ -1,6 +1,7 @@
 import App, { Container } from 'next/app'
 import React from 'react'
 import { ThemeProvider, createGlobalStyle } from 'styled-components'
+import Head from 'next/head'
 
 import theme from '../shared/theme'
 
@@ -19,12 +20,17 @@ export default class MyApp extends App {
   render() {
     const { Component, pageProps } = this.props
     return (
-      <Container>
-        <GlobalStyle />
-        <ThemeProvider theme={theme}>
-          <Component {...pageProps} />
-        </ThemeProvider>
-      </Container>
+      <>
+        <Head>
+          <link rel="stylesheet" href="https://use.typekit.net/zza5iro.css" />
+        </Head>
+        <Container>
+          <GlobalStyle />
+          <ThemeProvider theme={theme}>
+            <Component {...pageProps} />
+          </ThemeProvider>
+        </Container>
+      </>
     )
   }
 }

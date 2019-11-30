@@ -1,18 +1,13 @@
-import Link from 'next/link'
-import { PageContainer } from '../components'
+import { PageTitle, PageContainer, Link } from '../components'
 import db from '../services/db.js'
 
 const Index = props => (
   <PageContainer>
-    <ul>
-      {props.guides.map(guide => (
-        <li key={guide.id}>
-          <Link href="/guides/[id]" as={`/guides/${guide.id}`}>
-            {guide.title}
-          </Link>
-        </li>
-      ))}
-    </ul>
+    {props.guides.map(guide => (
+      <Link href="/guides/[id]" as={`/guides/${guide.id}`} key={guide.id}>
+        <PageTitle>{guide.title}</PageTitle>
+      </Link>
+    ))}
   </PageContainer>
 )
 

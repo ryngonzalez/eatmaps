@@ -4,10 +4,12 @@ import Box from './Box'
 import Footer from './Footer'
 
 const PageContainer = ({ children }) => (
-  <Box bg="PageBackground">
+  <Box maxWidth={960} m="0 auto">
     <NavBar />
-    <Box minHeight="100vh">{children}</Box>
-    <Footer />
+    <Box bg="PageBackground" p={3}>
+      <Box minHeight="100vh">{children}</Box>
+      <Footer />
+    </Box>
   </Box>
 )
 
