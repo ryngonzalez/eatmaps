@@ -2,12 +2,12 @@ import { useRouter } from 'next/router'
 import db from '../../services/db.js'
 import { PageContainer } from '../../components'
 import { useState } from 'react'
-import fetch from 'isomorphic-unfetch'
+import useYelpSearch from '../../hooks/use_yelp_search'
 
 export default function Guide(props) {
   const router = useRouter()
-  const [text, setText] = useState('')
-  const [searchResults, setSearchResults] = useState([])
+  const [searchQuery, setSearchQuery] = useState('')
+  const { isLoading, searchResults, search } = useYelpSearch()
 
   const places = props.places
 
@@ -17,20 +17,65 @@ export default function Guide(props) {
       <form
         onSubmit={async e => {
           e.preventDefault()
-          const yelpResponse = await fetch(`/api/yelp?text=${text}`)
-          const yelpResponseJson = await yelpResponse.json()
-          setSearchResults(yelpResponseJson)
+          search(searchQuery)
         }}
       >
         <input
           type="text"
-          value={text}
+          value={searchQuery}
           placeholder="Search for a place..."
           onChange={e => {
-            setText(e.target.value)
+            setSearchQuery(e.target.value)
           }}
         />
+        <button type="submit">Search</button>
       </form>
+
+      <div style={{ float: 'left' }}>
+        {isLoading ? (
+          <div>Loading...</div>
+        ) : (
+          searchResults.map(place => {
+            return (
+              <div
+                key={place.id}
+                onClick={() => {
+                  const record = {
+                    name: place.name,
+                    coordinates: place.coordinates,
+                    display_address: place.location.display_address,
+                    image_url: place.image_url,
+                    yelp_id: place.id,
+                    yelp_data: JSON.stringify(place),
+                  }
+                  db.collection('guides')
+                    .doc(props.guide.id)
+                    .collection('places')
+                    .add(record)
+                    .then(() => router.push(`/guides/${props.guide.id}/`))
+                }}
+              >
+                <h2>{place.name}</h2>
+                <img
+                  style={{
+                    float: 'left',
+                    objectFit: 'cover',
+                    width: 100,
+                    height: 100,
+                  }}
+                  src={place.image_url}
+                />
+                <div style={{ clear: 'both' }}>
+                  {place.location &&
+                    place.location.display_address.map(line => (
+                      <div>{line}</div>
+                    ))}
+                </div>
+              </div>
+            )
+          })
+        )}
+      </div>
 
       <div style={{ float: 'right' }}>
         {places.map(place => {
@@ -66,46 +111,6 @@ export default function Guide(props) {
               >
                 Delete
               </button>
-            </div>
-          )
-        })}
-      </div>
-
-      <div style={{ float: 'left' }}>
-        {searchResults.map(place => {
-          return (
-            <div
-              key={place.id}
-              onClick={() => {
-                const record = {
-                  name: place.name,
-                  coordinates: place.coordinates,
-                  display_address: place.location.display_address,
-                  image_url: place.image_url,
-                  yelp_id: place.id,
-                  yelp_data: JSON.stringify(place),
-                }
-                db.collection('guides')
-                  .doc(props.guide.id)
-                  .collection('places')
-                  .add(record)
-                  .then(() => router.push(`/guides/${props.guide.id}/`))
-              }}
-            >
-              <h2>{place.name}</h2>
-              <img
-                style={{
-                  float: 'left',
-                  objectFit: 'cover',
-                  width: 100,
-                  height: 100,
-                }}
-                src={place.image_url}
-              />
-              <div style={{ clear: 'both' }}>
-                {place.location &&
-                  place.location.display_address.map(line => <div>{line}</div>)}
-              </div>
             </div>
           )
         })}
