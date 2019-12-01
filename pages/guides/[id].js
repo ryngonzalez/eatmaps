@@ -8,6 +8,7 @@ import useGuideListener from '../../hooks/use_guide_listener'
 export default function Guide(props) {
   const router = useRouter()
   const [searchQuery, setSearchQuery] = useState('')
+  const [isSearchResultsVisible, setIsSearchResultsVisible] = useState(false)
   const { isLoading, searchResults, search } = useYelpSearch()
   const guideListener = useGuideListener(props.guide.id)
 
@@ -19,6 +20,7 @@ export default function Guide(props) {
       <form
         onSubmit={e => {
           e.preventDefault()
+          setIsSearchResultsVisible(true)
           search(searchQuery)
         }}
       >
@@ -34,39 +36,44 @@ export default function Guide(props) {
       </form>
 
       <div style={{ float: 'left' }}>
-        {isLoading ? (
-          <div>Loading...</div>
-        ) : (
-          searchResults.map(place => {
-            return (
-              <div
-                key={place.id}
-                onClick={() => {
-                  const record = {
-                    name: place.name,
-                    coordinates: place.coordinates,
-                    display_address: place.location.display_address,
-                    image_url: place.image_url,
-                    yelp_id: place.id,
-                    yelp_data: JSON.stringify(place),
-                  }
-                  db.collection('guides')
-                    .doc(props.guide.id)
-                    .collection('places')
-                    .add(record)
-                }}
-              >
-                <h2>{place.name}</h2>
-                <div style={{ clear: 'both' }}>
-                  {place.location &&
-                    place.location.display_address.map(line => (
-                      <div>{line}</div>
-                    ))}
+        {isSearchResultsVisible &&
+          (isLoading ? (
+            <div>Loading...</div>
+          ) : (
+            searchResults.map(place => {
+              return (
+                <div
+                  key={place.id}
+                  onClick={() => {
+                    // reset search inputs
+                    setIsSearchResultsVisible(false)
+                    setSearchQuery('')
+
+                    const record = {
+                      name: place.name,
+                      coordinates: place.coordinates,
+                      display_address: place.location.display_address,
+                      image_url: place.image_url,
+                      yelp_id: place.id,
+                      yelp_data: JSON.stringify(place),
+                    }
+                    db.collection('guides')
+                      .doc(props.guide.id)
+                      .collection('places')
+                      .add(record)
+                  }}
+                >
+                  <h2>{place.name}</h2>
+                  <div style={{ clear: 'both' }}>
+                    {place.location &&
+                      place.location.display_address.map(line => (
+                        <div>{line}</div>
+                      ))}
+                  </div>
                 </div>
-              </div>
-            )
-          })
-        )}
+              )
+            })
+          ))}
       </div>
 
       <div style={{ float: 'right' }}>
