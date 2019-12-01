@@ -3,19 +3,21 @@ import db from '../../services/db.js'
 import { PageContainer } from '../../components'
 import { useState } from 'react'
 import useYelpSearch from '../../hooks/use_yelp_search'
+import useGuideListener from '../../hooks/use_guide_listener'
 
 export default function Guide(props) {
   const router = useRouter()
   const [searchQuery, setSearchQuery] = useState('')
   const { isLoading, searchResults, search } = useYelpSearch()
+  const guideListener = useGuideListener(props.guide.id)
 
-  const places = props.places
+  const places = guideListener.places || props.places
 
   return (
     <PageContainer>
       <h1>{props.guide.title}</h1>
       <form
-        onSubmit={async e => {
+        onSubmit={e => {
           e.preventDefault()
           search(searchQuery)
         }}
@@ -52,19 +54,9 @@ export default function Guide(props) {
                     .doc(props.guide.id)
                     .collection('places')
                     .add(record)
-                    .then(() => router.push(`/guides/${props.guide.id}/`))
                 }}
               >
                 <h2>{place.name}</h2>
-                <img
-                  style={{
-                    float: 'left',
-                    objectFit: 'cover',
-                    width: 100,
-                    height: 100,
-                  }}
-                  src={place.image_url}
-                />
                 <div style={{ clear: 'both' }}>
                   {place.location &&
                     place.location.display_address.map(line => (
@@ -80,7 +72,7 @@ export default function Guide(props) {
       <div style={{ float: 'right' }}>
         {places.map(place => {
           return (
-            <div key={place.yelp_id}>
+            <div key={place.id}>
               <h2>{place.name}</h2>
               <img
                 style={{
@@ -104,9 +96,6 @@ export default function Guide(props) {
                     .collection('places')
                     .doc(place.id)
                     .delete()
-                    .then(() => {
-                      router.push(`/guides/${props.guide.id}/`)
-                    })
                 }}
               >
                 Delete
